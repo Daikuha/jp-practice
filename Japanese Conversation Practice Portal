@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Japanese Conversation Practice Portal</title>
+    <style>
+        body { font-family: "Helvetica Neue", Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; background-color: #f4f4f9; color: #333; }
+        h1 { text-align: center; color: #007bff; border-bottom: 2px solid #007bff; padding-bottom: 10px; }
+        .intro { text-align: center; margin-bottom: 30px; font-size: 0.9rem; color: #666; }
+        .scenario-list { list-style: none; padding: 0; }
+        .scenario-item { background: white; margin-bottom: 15px; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); transition: transform 0.2s; display: flex; justify-content: space-between; align-items: center; }
+        .scenario-item:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.15); }
+        .scenario-info h3 { margin: 0 0 5px 0; font-size: 1.2rem; }
+        .scenario-info p { margin: 0; font-size: 0.9rem; color: #666; }
+        .btn-go { text-decoration: none; background: #28a745; color: white; padding: 10px 20px; border-radius: 5px; font-weight: bold; }
+        .btn-go:hover { background: #218838; }
+    </style>
+</head>
+<body>
+
+    <h1>🇯🇵 日本語会話練習 (Conversation Practice)</h1>
+    
+    <div class="intro">
+        <p>Google Gemini APIキーを用意して、練習したいシチュエーションを選んでください。</p>
+        <p>Please prepare your Google Gemini API Key and select a scenario.</p>
+    </div>
+
+    <ul class="scenario-list">
+        <!-- 
+          ここに新しい練習を追加していきます。
+          href="ファイル名.html" の部分を、アップロードした実際のファイル名に変えてください。
+        -->
+
+        <li class="scenario-item">
+            <div class="scenario-info">
+                <h3>🏪 どこに いますか (dokoni imasuka)</h3>
+                <p>Say where you are now over the phone</p>
+            </div>
+            <!-- ↓ここの "conbini.html" を実際のファイル名にする -->
+            <a href="student_Say_where__you_are_over_the_phone.html" class="btn-go">Start ▶</a>
+        </li>
+
+        <li class="scenario-item">
+            <div class="scenario-info">
+                <h3>🏢 管理人 (Apartment Manager)</h3>
+                <p>ゴミの出し方について質問します。</p>
+            </div>
+            <!-- ↓ここの "manager.html" を実際のファイル名にする -->
+            <a href="manager.html" class="btn-go">Start ▶</a>
+        </li>
+
+    </ul>
+
+</body>
+</html>
