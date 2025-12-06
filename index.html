@@ -244,48 +244,6 @@
             }
         }
 
-        /* 進捗トラッカー */
-        .progress-tracker {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 20px 25px;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            margin-top: 25px;
-        }
-
-        .progress-text {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #2d3748;
-            margin-bottom: 12px;
-        }
-
-        .progress-emoji {
-            font-size: 1.3em;
-        }
-
-        .progress-bar-container {
-            width: 100%;
-            height: 12px;
-            background: #e2e8f0;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #48bb78 0%, #38a169 100%);
-            border-radius: 10px;
-            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 2px 8px rgba(72, 187, 120, 0.4);
-        }
-
         /* 検索ボックス */
         .search-container {
             margin-top: 20px;
@@ -309,46 +267,6 @@
 
         #searchInput::placeholder {
             color: #a0aec0;
-        }
-
-        /* 完了ボタン */
-        .btn-complete {
-            width: 44px;
-            height: 44px;
-            border: 2px solid #e2e8f0;
-            background: white;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 1.2rem;
-            color: transparent;
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .btn-complete:hover {
-            border-color: #48bb78;
-            background: #f0fff4;
-            transform: scale(1.1);
-        }
-
-        .btn-complete.completed {
-            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
-            border-color: #48bb78;
-            color: white;
-            box-shadow: 0 4px 12px rgba(72, 187, 120, 0.4);
-        }
-
-        .scenario-item.completed {
-            background: #f0fff4;
-            border: 1px solid #9ae6b4;
-        }
-
-        .scenario-item.completed::before {
-            background: linear-gradient(180deg, #48bb78 0%, #38a169 100%);
-            transform: scaleY(1);
         }
 
         /* 検索結果0件の表示 */
@@ -383,38 +301,13 @@
             }
         }
 
-        /* レスポンシブ：完了ボタン */
-        @media (max-width: 640px) {
-            .scenario-item {
-                flex-wrap: wrap;
-            }
 
-            .btn-complete {
-                order: 3;
-                margin-top: 10px;
-            }
-
-            .btn-go {
-                order: 2;
-            }
-        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
             <h1>🇯🇵 Japanese Conversation Practice</h1>
-            
-            <!-- 進捗トラッカー -->
-            <div class="progress-tracker">
-                <div class="progress-text">
-                    <span class="progress-emoji">📊</span>
-                    <span id="progressText">0 / 0 完了</span>
-                </div>
-                <div class="progress-bar-container">
-                    <div class="progress-bar" id="progressBar"></div>
-                </div>
-            </div>
         </div>
         
         <div class="intro">
@@ -434,7 +327,6 @@
                     <p>Say where you are now over the phone</p>
                 </div>
                 <a href="student_Say_where.html" class="btn-go">Start</a>
-                <button class="btn-complete" data-scenario="scenario-1">✓</button>
             </li>
 
             <li class="scenario-item">
@@ -443,7 +335,6 @@
                     <p>Briefly explain a situation and make a polite request for help</p>
                 </div>
                 <a href="student_ask_for_help.html" class="btn-go">Start</a>
-                <button class="btn-complete" data-scenario="scenario-2">✓</button>
             </li>
 
             <li class="scenario-item">
@@ -452,7 +343,6 @@
                     <p>Talk about the kindness you received from volunteers, using expressions such as ～てくださいました.</p>
                 </div>
                 <a href="student_Talk_about_What_Volunteer_did.html" class="btn-go">Start</a>
-                <button class="btn-complete" data-scenario="scenario-3">✓</button>
             </li>
         </ul>
         
@@ -468,67 +358,6 @@
     </div>
 
     <script>
-        // 進捗トラッカーとローカルストレージ管理
-        const STORAGE_KEY = 'japaneseConversationProgress';
-
-        // 完了状態をロード
-        function loadProgress() {
-            const saved = localStorage.getItem(STORAGE_KEY);
-            return saved ? JSON.parse(saved) : {};
-        }
-
-        // 完了状態を保存
-        function saveProgress(progress) {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
-        }
-
-        // 進捗バーを更新
-        function updateProgressBar() {
-            const progress = loadProgress();
-            const totalScenarios = document.querySelectorAll('.scenario-item').length;
-            const completedScenarios = Object.values(progress).filter(v => v).length;
-            
-            const percentage = totalScenarios > 0 ? (completedScenarios / totalScenarios) * 100 : 0;
-            
-            document.getElementById('progressText').textContent = `${completedScenarios} / ${totalScenarios} 完了`;
-            document.getElementById('progressBar').style.width = `${percentage}%`;
-        }
-
-        // 完了ボタンの状態を復元
-        function restoreCompletionStates() {
-            const progress = loadProgress();
-            document.querySelectorAll('.btn-complete').forEach(btn => {
-                const scenarioId = btn.dataset.scenario;
-                if (progress[scenarioId]) {
-                    btn.classList.add('completed');
-                    btn.closest('.scenario-item').classList.add('completed');
-                }
-            });
-        }
-
-        // 完了ボタンのクリックイベント
-        document.addEventListener('click', (e) => {
-            if (e.target.classList.contains('btn-complete')) {
-                const btn = e.target;
-                const scenarioId = btn.dataset.scenario;
-                const progress = loadProgress();
-                
-                // トグル
-                if (progress[scenarioId]) {
-                    delete progress[scenarioId];
-                    btn.classList.remove('completed');
-                    btn.closest('.scenario-item').classList.remove('completed');
-                } else {
-                    progress[scenarioId] = true;
-                    btn.classList.add('completed');
-                    btn.closest('.scenario-item').classList.add('completed');
-                }
-                
-                saveProgress(progress);
-                updateProgressBar();
-            }
-        });
-
         // 検索機能
         const searchInput = document.getElementById('searchInput');
         const scenarioItems = document.querySelectorAll('.scenario-item');
@@ -558,11 +387,7 @@
             }
         });
 
-        // 初期化
-        document.addEventListener('DOMContentLoaded', () => {
-            updateProgressBar();
-            restoreCompletionStates();
-        });
+
     </script>
 </body>
 </html>
