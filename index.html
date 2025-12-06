@@ -5,61 +5,564 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Japanese Conversation Practice Portal</title>
     <style>
-        body { font-family: "Helvetica Neue", Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; background-color: #f4f4f9; color: #333; }
-        h1 { text-align: center; color: #007bff; border-bottom: 2px solid #007bff; padding-bottom: 10px; }
-        .intro { text-align: center; margin-bottom: 30px; font-size: 0.9rem; color: #666; }
-        .scenario-list { list-style: none; padding: 0; }
-        .scenario-item { background: white; margin-bottom: 15px; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); transition: transform 0.2s; display: flex; justify-content: space-between; align-items: center; }
-        .scenario-item:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.15); }
-        .scenario-info h3 { margin: 0 0 5px 0; font-size: 1.2rem; }
-        .scenario-info p { margin: 0; font-size: 0.9rem; color: #666; }
-        .btn-go { text-decoration: none; background: #28a745; color: white; padding: 10px 20px; border-radius: 5px; font-weight: bold; }
-        .btn-go:hover { background: #218838; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* ヘッダー部分 */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        h1 {
+            color: white;
+            font-size: clamp(1.8rem, 5vw, 3rem);
+            margin-bottom: 15px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .intro {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            animation: fadeIn 1s ease-out 0.2s both;
+        }
+
+        .intro p {
+            font-size: clamp(0.9rem, 2vw, 1rem);
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 8px;
+        }
+
+        .intro p:last-child {
+            margin-bottom: 0;
+            color: #888;
+            font-size: 0.95rem;
+        }
+
+        /* シナリオリスト */
+        .scenario-list {
+            list-style: none;
+            display: grid;
+            gap: 20px;
+            animation: fadeInUp 1s ease-out 0.4s both;
+        }
+
+        .scenario-item {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .scenario-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .scenario-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+        }
+
+        .scenario-item:hover::before {
+            transform: scaleY(1);
+        }
+
+        .scenario-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .scenario-info h3 {
+            font-size: clamp(1.1rem, 3vw, 1.3rem);
+            color: #2d3748;
+            margin-bottom: 8px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .scenario-info h3 .emoji {
+            font-size: 1.5em;
+            flex-shrink: 0;
+        }
+
+        .scenario-info p {
+            font-size: clamp(0.85rem, 2vw, 0.95rem);
+            color: #718096;
+            line-height: 1.6;
+        }
+
+        .btn-go {
+            text-decoration: none;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 28px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-go:hover {
+            transform: translateX(3px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+        }
+
+        .btn-go::after {
+            content: '▶';
+            font-size: 0.8em;
+        }
+
+        /* フッター */
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            animation: fadeIn 1.2s ease-out 0.6s both;
+        }
+
+        /* アニメーション */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* レスポンシブ対応 */
+        @media (max-width: 640px) {
+            body {
+                padding: 15px;
+            }
+
+            .intro {
+                padding: 20px;
+                border-radius: 16px;
+            }
+
+            .scenario-item {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 20px;
+            }
+
+            .scenario-info h3 {
+                flex-wrap: wrap;
+            }
+
+            .btn-go {
+                width: 100%;
+                justify-content: center;
+                padding: 14px 24px;
+            }
+
+            .footer {
+                margin-top: 30px;
+                font-size: 0.85rem;
+            }
+        }
+
+        /* タブレット対応 */
+        @media (min-width: 641px) and (max-width: 1024px) {
+            .container {
+                max-width: 700px;
+            }
+
+            .scenario-item {
+                padding: 22px;
+            }
+        }
+
+        /* 進捗トラッカー */
+        .progress-tracker {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px 25px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            margin-top: 25px;
+        }
+
+        .progress-text {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 12px;
+        }
+
+        .progress-emoji {
+            font-size: 1.3em;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 12px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #48bb78 0%, #38a169 100%);
+            border-radius: 10px;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px rgba(72, 187, 120, 0.4);
+        }
+
+        /* 検索ボックス */
+        .search-container {
+            margin-top: 20px;
+        }
+
+        #searchInput {
+            width: 100%;
+            padding: 14px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            outline: none;
+            background: white;
+        }
+
+        #searchInput:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        #searchInput::placeholder {
+            color: #a0aec0;
+        }
+
+        /* 完了ボタン */
+        .btn-complete {
+            width: 44px;
+            height: 44px;
+            border: 2px solid #e2e8f0;
+            background: white;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+            color: transparent;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-complete:hover {
+            border-color: #48bb78;
+            background: #f0fff4;
+            transform: scale(1.1);
+        }
+
+        .btn-complete.completed {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            border-color: #48bb78;
+            color: white;
+            box-shadow: 0 4px 12px rgba(72, 187, 120, 0.4);
+        }
+
+        .scenario-item.completed {
+            background: #f0fff4;
+            border: 1px solid #9ae6b4;
+        }
+
+        .scenario-item.completed::before {
+            background: linear-gradient(180deg, #48bb78 0%, #38a169 100%);
+            transform: scaleY(1);
+        }
+
+        /* 検索結果0件の表示 */
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 16px;
+            margin-top: 20px;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .no-results p {
+            margin: 8px 0;
+            color: #718096;
+        }
+
+        .no-results p:first-child {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        /* ダークモード対応（オプション） */
+        @media (prefers-color-scheme: dark) {
+            .intro p {
+                color: #4a5568;
+            }
+            
+            .scenario-info h3 {
+                color: #1a202c;
+            }
+        }
+
+        /* レスポンシブ：完了ボタン */
+        @media (max-width: 640px) {
+            .scenario-item {
+                flex-wrap: wrap;
+            }
+
+            .btn-complete {
+                order: 3;
+                margin-top: 10px;
+            }
+
+            .btn-go {
+                order: 2;
+            }
+        }
     </style>
 </head>
 <body>
+    <div class="container">
+        <div class="header">
+            <h1>🇯🇵 Japanese Conversation Practice</h1>
+            
+            <!-- 進捗トラッカー -->
+            <div class="progress-tracker">
+                <div class="progress-text">
+                    <span class="progress-emoji">📊</span>
+                    <span id="progressText">0 / 0 完了</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="intro">
+            <p><strong>Google Gemini APIキーを用意して、練習したいシチュエーションを選んでください。</strong></p>
+            <p>Please prepare your Google Gemini API Key and select a scenario.</p>
+            
+            <!-- 検索ボックス -->
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="🔍 シナリオを検索... (Search scenarios)" />
+            </div>
+        </div>
 
-    <h1>🇯🇵 にほんご かいわ れんしゅう (Conversation Practice)</h1>
-    
-    <div class="intro">
-        <p>Google Gemini APIキーを用意して、練習したいシチュエーションを選んでください。</p>
-        <p>Please prepare your Google Gemini API Key and select a scenario.</p>
+        <ul class="scenario-list">
+            <li class="scenario-item">
+                <div class="scenario-info">
+                    <h3><span class="emoji">🏪</span> <span>どこに いますか (dokoni imasuka)</span></h3>
+                    <p>Say where you are now over the phone</p>
+                </div>
+                <a href="student_Say_where.html" class="btn-go">Start</a>
+                <button class="btn-complete" data-scenario="scenario-1">✓</button>
+            </li>
+
+            <li class="scenario-item">
+                <div class="scenario-info">
+                    <h3><span class="emoji">🏢</span> <span>ちょっと みて くださいませんか</span></h3>
+                    <p>Briefly explain a situation and make a polite request for help</p>
+                </div>
+                <a href="student_ask_for_help.html" class="btn-go">Start</a>
+                <button class="btn-complete" data-scenario="scenario-2">✓</button>
+            </li>
+
+            <li class="scenario-item">
+                <div class="scenario-info">
+                    <h3><span class="emoji">💝</span> <span>ボランティアさんが してくださいました</span></h3>
+                    <p>Talk about the kindness you received from volunteers, using expressions such as ～てくださいました.</p>
+                </div>
+                <a href="student_Talk_about_What_Volunteer_did.html" class="btn-go">Start</a>
+                <button class="btn-complete" data-scenario="scenario-3">✓</button>
+            </li>
+        </ul>
+        
+        <!-- 検索結果が0件の時の表示 -->
+        <div class="no-results" id="noResults" style="display: none;">
+            <p>😢 該当するシナリオが見つかりませんでした</p>
+            <p>No scenarios found</p>
+        </div>
+
+        <div class="footer">
+            <p>💪 頑張ってください！Good luck with your studies!</p>
+        </div>
     </div>
 
-    <ul class="scenario-list">
-        <!-- 
-          ここに新しい練習を追加していきます。
-          href="ファイル名.html" の部分を、アップロードした実際のファイル名に変えてください。
-        -->
+    <script>
+        // 進捗トラッカーとローカルストレージ管理
+        const STORAGE_KEY = 'japaneseConversationProgress';
 
-        <li class="scenario-item">
-            <div class="scenario-info">
-                <h3>🏪 どこに いますか (dokoni imasuka)</h3>
-                <p>Say where you are now over the phone</p>
-            </div>
-            <!-- ↓ここの "conbini.html" を実際のファイル名にする -->
-            <a href="student_Say_where.html" class="btn-go">Start ▶</a>
-        </li>
+        // 完了状態をロード
+        function loadProgress() {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            return saved ? JSON.parse(saved) : {};
+        }
 
-        <li class="scenario-item">
-            <div class="scenario-info">
-                <h3>🏢 ちょっと みて くださいませんか (Apartment Manager)</h3>
-                <p>Briefly explain a situation and make a polite request for help</p>
-            </div>
-            <!-- ↓ここの "manager.html" を実際のファイル名にする -->
-            <a href="student_ask_for_help.html" class="btn-go">Start ▶</a>
-        </li>
+        // 完了状態を保存
+        function saveProgress(progress) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+        }
 
-        <li class="scenario-item">
-            <div class="scenario-info">
-                <h3>🏢 ボランティアさんが してくださいました（Talk about the kindness you received）</h3>
-                <p>Talk about the kindness you received from volunteers, using expressions such as ～てくださいました.</p>
-            </div>
-            <!-- ↓ここの "manager.html" を実際のファイル名にする -->
-            <a href="student_Talk_about_What_Volunteer_did.html" class="btn-go">Start ▶</a>
-        </li>
-        
-    </ul>
+        // 進捗バーを更新
+        function updateProgressBar() {
+            const progress = loadProgress();
+            const totalScenarios = document.querySelectorAll('.scenario-item').length;
+            const completedScenarios = Object.values(progress).filter(v => v).length;
+            
+            const percentage = totalScenarios > 0 ? (completedScenarios / totalScenarios) * 100 : 0;
+            
+            document.getElementById('progressText').textContent = `${completedScenarios} / ${totalScenarios} 完了`;
+            document.getElementById('progressBar').style.width = `${percentage}%`;
+        }
 
+        // 完了ボタンの状態を復元
+        function restoreCompletionStates() {
+            const progress = loadProgress();
+            document.querySelectorAll('.btn-complete').forEach(btn => {
+                const scenarioId = btn.dataset.scenario;
+                if (progress[scenarioId]) {
+                    btn.classList.add('completed');
+                    btn.closest('.scenario-item').classList.add('completed');
+                }
+            });
+        }
+
+        // 完了ボタンのクリックイベント
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('btn-complete')) {
+                const btn = e.target;
+                const scenarioId = btn.dataset.scenario;
+                const progress = loadProgress();
+                
+                // トグル
+                if (progress[scenarioId]) {
+                    delete progress[scenarioId];
+                    btn.classList.remove('completed');
+                    btn.closest('.scenario-item').classList.remove('completed');
+                } else {
+                    progress[scenarioId] = true;
+                    btn.classList.add('completed');
+                    btn.closest('.scenario-item').classList.add('completed');
+                }
+                
+                saveProgress(progress);
+                updateProgressBar();
+            }
+        });
+
+        // 検索機能
+        const searchInput = document.getElementById('searchInput');
+        const scenarioItems = document.querySelectorAll('.scenario-item');
+        const noResults = document.getElementById('noResults');
+
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase().trim();
+            let visibleCount = 0;
+
+            scenarioItems.forEach(item => {
+                const title = item.querySelector('h3').textContent.toLowerCase();
+                const description = item.querySelector('p').textContent.toLowerCase();
+                
+                if (title.includes(searchTerm) || description.includes(searchTerm)) {
+                    item.style.display = 'flex';
+                    visibleCount++;
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+
+            // 検索結果が0件の場合
+            if (visibleCount === 0 && searchTerm !== '') {
+                noResults.style.display = 'block';
+            } else {
+                noResults.style.display = 'none';
+            }
+        });
+
+        // 初期化
+        document.addEventListener('DOMContentLoaded', () => {
+            updateProgressBar();
+            restoreCompletionStates();
+        });
+    </script>
 </body>
 </html>
