@@ -3,400 +3,378 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Japanese Conversation Practice Portal</title>
+    <title>日本語会話練習ポータル | Japanese Conversation Practice</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --primary-color: #0056b3;
+            --accent-color: #ffc107;
+            --bg-color: #f0f2f5;
+            --card-bg: #ffffff;
         }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-            color: #333;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        /* ヘッダー部分 */
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-            animation: fadeInDown 0.8s ease-out;
-        }
-
-        h1 {
-            color: white;
-            font-size: clamp(1.8rem, 5vw, 3rem);
-            margin-bottom: 15px;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            font-weight: 700;
-            letter-spacing: -0.5px;
-        }
-
-        .intro {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 25px;
-            border-radius: 20px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
-            animation: fadeIn 1s ease-out 0.2s both;
-        }
-
-        .intro p {
-            font-size: clamp(0.9rem, 2vw, 1rem);
-            color: #555;
-            line-height: 1.8;
-            margin-bottom: 8px;
-        }
-
-        .intro p:last-child {
-            margin-bottom: 0;
-            color: #888;
-            font-size: 0.95rem;
-        }
-
-        /* シナリオリスト */
-        .scenario-list {
-            list-style: none;
-            display: grid;
-            gap: 20px;
-            animation: fadeInUp 1s ease-out 0.4s both;
-        }
-
-        .scenario-item {
-            background: white;
-            border-radius: 16px;
-            padding: 25px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 20px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .scenario-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 5px;
-            height: 100%;
-            background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
-            transform: scaleY(0);
-            transition: transform 0.3s ease;
-        }
-
-        .scenario-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
-        }
-
-        .scenario-item:hover::before {
-            transform: scaleY(1);
-        }
-
-        .scenario-info {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .scenario-info h3 {
-            font-size: clamp(1.1rem, 3vw, 1.3rem);
-            color: #2d3748;
-            margin-bottom: 8px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .scenario-info h3 .emoji {
-            font-size: 1.5em;
-            flex-shrink: 0;
-        }
-
-        .scenario-info p {
-            font-size: clamp(0.85rem, 2vw, 0.95rem);
-            color: #718096;
+        body { 
+            font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", sans-serif; 
+            max-width: 900px; 
+            margin: 0 auto; 
+            padding: 20px; 
+            background-color: var(--bg-color); 
+            color: #333; 
             line-height: 1.6;
         }
 
-        .btn-go {
-            text-decoration: none;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 12px 28px;
-            border-radius: 25px;
-            font-weight: 600;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-            white-space: nowrap;
-            display: inline-flex;
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        h1 { margin: 0; color: var(--primary-color); font-size: 1.8rem; }
+        .subtitle { color: #666; font-size: 1rem; margin-top: 5px; }
+
+        /* Alert Box for Tips */
+        .alert-box {
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            color: #856404;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            font-size: 0.9rem;
+        }
+        .alert-box strong { color: #533f03; }
+
+        /* Filter Section (New) */
+        .filter-section {
+            margin-bottom: 30px;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .filter-group {
+            margin-bottom: 10px;
+            display: flex;
             align-items: center;
-            gap: 6px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .filter-group:last-child { margin-bottom: 0; }
+        .filter-label {
+            font-weight: bold;
+            font-size: 0.9rem;
+            color: #555;
+            margin-right: 5px;
+            min-width: 60px;
+        }
+        .filter-btn {
+            background: #f0f2f5;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            padding: 5px 12px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #555;
+        }
+        .filter-btn:hover { background: #e2e6ea; }
+        .filter-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        .filter-btn-reset {
+            background: transparent;
+            text-decoration: underline;
+            border: none;
+            color: #dc3545;
+            font-size: 0.85rem;
+            cursor: pointer;
+            margin-left: auto;
         }
 
-        .btn-go:hover {
-            transform: translateX(3px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+        /* Scenario Grid */
+        .scenario-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+            gap: 20px; 
         }
 
-        .btn-go::after {
-            content: '▶';
-            font-size: 0.8em;
+        /* Card Design */
+        .scenario-card { 
+            background: var(--card-bg); 
+            border-radius: 15px; 
+            overflow: hidden; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.08); 
+            transition: transform 0.2s, box-shadow 0.2s; 
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #eee;
+        }
+        /* Hidden state for filtering */
+        .scenario-card.hidden {
+            display: none;
         }
 
-        /* フッター */
-        .footer {
+        .scenario-card:hover { 
+            transform: translateY(-5px); 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.12); 
+            border-color: var(--primary-color);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #007bff, #00d2ff);
+            color: white;
+            padding: 15px;
+            font-size: 3rem;
+            text-align: center;
+        }
+        
+        .card-body { padding: 20px; flex-grow: 1; }
+        .card-title { margin: 0 0 10px 0; font-size: 1.2rem; font-weight: bold; color: #333; }
+        .card-desc { margin: 0 0 15px 0; font-size: 0.9rem; color: #666; }
+        
+        .tags { display: flex; gap: 8px; margin-bottom: 15px; flex-wrap: wrap; }
+        .tag { 
+            font-size: 0.75rem; padding: 3px 8px; border-radius: 4px; font-weight: bold; 
+        }
+        .tag-level { background-color: #e3f2fd; color: #0d47a1; }
+        .tag-topic { background-color: #f3e5f5; color: #7b1fa2; }
+
+        .btn-start { 
+            display: block; 
+            width: 100%; 
+            padding: 12px; 
+            background: var(--primary-color); 
+            color: white; 
+            text-align: center; 
+            text-decoration: none; 
+            font-weight: bold; 
+            border-radius: 0 0 15px 15px; /* Bottom rounded corners only if outside padding */
+            margin-top: auto;
+            transition: background 0.2s;
+        }
+        .scenario-card .btn-start { border-radius: 0; } /* Reset for full width bottom */
+        .btn-start:hover { background: #003d82; }
+
+        /* API Key Section */
+        .api-section {
             text-align: center;
             margin-top: 50px;
-            padding: 20px;
-            color: rgba(255, 255, 255, 0.8);
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            color: #666;
             font-size: 0.9rem;
-            animation: fadeIn 1.2s ease-out 0.6s both;
         }
-
-        /* アニメーション */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* レスポンシブ対応 */
-        @media (max-width: 640px) {
-            body {
-                padding: 15px;
-            }
-
-            .intro {
-                padding: 20px;
-                border-radius: 16px;
-            }
-
-            .scenario-item {
-                flex-direction: column;
-                align-items: flex-start;
-                padding: 20px;
-            }
-
-            .scenario-info h3 {
-                flex-wrap: wrap;
-            }
-
-            .btn-go {
-                width: 100%;
-                justify-content: center;
-                padding: 14px 24px;
-            }
-
-            .footer {
-                margin-top: 30px;
-                font-size: 0.85rem;
-            }
-        }
-
-        /* タブレット対応 */
-        @media (min-width: 641px) and (max-width: 1024px) {
-            .container {
-                max-width: 700px;
-            }
-
-            .scenario-item {
-                padding: 22px;
-            }
-        }
-
-        /* 検索ボックス */
-        .search-container {
-            margin-top: 20px;
-        }
-
-        #searchInput {
-            width: 100%;
-            padding: 14px 20px;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            outline: none;
-            background: white;
-        }
-
-        #searchInput:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        #searchInput::placeholder {
-            color: #a0aec0;
-        }
-
-        /* 検索結果0件の表示 */
-        .no-results {
-            text-align: center;
-            padding: 60px 20px;
-            background: white;
-            border-radius: 16px;
-            margin-top: 20px;
-            animation: fadeIn 0.5s ease-out;
-        }
-
-        .no-results p {
-            margin: 8px 0;
-            color: #718096;
-        }
-
-        .no-results p:first-child {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #2d3748;
-        }
-
-        /* ダークモード対応（オプション） */
-        @media (prefers-color-scheme: dark) {
-            .intro p {
-                color: #4a5568;
-            }
-            
-            .scenario-info h3 {
-                color: #1a202c;
-            }
-        }
-
+        .api-link { color: var(--primary-color); text-decoration: none; font-weight: bold; }
+        .api-link:hover { text-decoration: underline; }
 
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>🇯🇵 Japanese Conversation Practice</h1>
-        </div>
-        
-        <div class="intro">
-            <p><strong>Google Gemini APIキーを用意して、練習したいシチュエーションを選んでください。</strong></p>
-            <p>Please prepare your Google Gemini API Key and select a scenario.</p>
-            
-            <!-- 検索ボックス -->
-            <div class="search-container">
-                <input type="text" id="searchInput" placeholder="🔍 シナリオを検索... (Search scenarios)" />
-            </div>
-        </div>
 
-        <ul class="scenario-list">
-             <li class="scenario-item">
-                <div class="scenario-info">
-                    <h3><span class="emoji">💝</span> <span>みん日L41-C1 ボランティアさんが してくださいました</span></h3>
-                    <p>Talk about the kindness you received from volunteers, using expressions such as ～てくださいました.</p>
-                </div>
-                <a href="student_Talk_about_Kindness.html" class="btn-go">Start</a>
-            </li>
-            
-            <li class="scenario-item">
-                <div class="scenario-info">
-                    <h3><span class="emoji">🏢</span> <span>みん日L41-C3 ちょっと みて くださいませんか</span></h3>
-                    <p>Briefly explain a situation and make a polite request for help</p>
-                </div>
-                <a href="student_Make_a_polite_request.html" class="btn-go">Start</a>
-            </li>
-
-            <li class="scenario-item">
-                <div class="scenario-info">
-                    <h3><span class="emoji">🏢</span> <span>あなたは なにを したいですか。ともだちに　言いましょう</span></h3>
-                    <p>Say that you would like to drop by somewhere</p>
-                </div>
-                <a href="student_drop_by.html" class="btn-go">Start</a>
-            </li>
-            
-            <li class="scenario-item">
-                <div class="scenario-info">
-                    <h3><span class="emoji">🏪</span> <span>どこに いますか (dokoni imasuka)</span></h3>
-                    <p>Say where you are now over the phone</p>
-                </div>
-                <a href="student_Say_where.html" class="btn-go">Start</a>
-            </li>
-           
+    <header>
+        <h1>🇯🇵 日本語会話練習ポータル</h1>
+        <div class="subtitle">Japanese Conversation Practice Portal</div>
+    </header>
+    
+    <!-- ⚠️ 注意書きエリア -->
+    <div class="alert-box">
+        <div>📢 <b>Before You Start (利用前の注意)</b></div>
+        <ul style="margin: 5px 0 0 20px; padding: 0;">
+            <li><b>iPhone/iPad Users:</b> Turn off Silent Mode (マナーモードを解除してください). Otherwise, no sound will play.</li>
+            <li><b>API Key:</b> You need a Google Gemini API Key (Free). <a href="https://aistudio.google.com/app/apikey" target="_blank">Get it here ↗</a></li>
         </ul>
-        
-        <!-- 検索結果が0件の時の表示 -->
-        <div class="no-results" id="noResults" style="display: none;">
-            <p>😢 該当するシナリオが見つかりませんでした</p>
-            <p>No scenarios found</p>
-        </div>
+    </div>
 
-        <div class="footer">
-            <p>💪 頑張ってください！Good luck with your studies!</p>
+    <!-- フィルタリングUI (JSで中身を生成) -->
+    <div id="filter-container" class="filter-section" style="display:none;">
+        <!-- Level Filters -->
+        <div class="filter-group" id="level-filters">
+            <span class="filter-label">Level:</span>
+            <!-- Buttons will be injected here -->
+        </div>
+        <!-- Topic Filters -->
+        <div class="filter-group" id="topic-filters" style="margin-top:10px; border-top:1px dashed #eee; padding-top:10px;">
+            <span class="filter-label">Topic:</span>
+            <!-- Buttons will be injected here -->
+        </div>
+        <div style="text-align: right; margin-top: 10px;">
+            <button class="filter-btn-reset" onclick="resetFilters()">Clear Filters</button>
         </div>
     </div>
 
+    <!-- シナリオ一覧 -->
+    <div class="scenario-grid" id="scenario-grid">
+
+
+<!-- シナリオ:ちょっと みて くださいませんか。  -->
+        <article class="scenario-card" data-level="★★☆☆ A2" data-topic="Marugoto A2-1">
+            <div class="card-header">🏢</div>
+            <div class="card-body">
+                <div class="tags">
+                    <span class="tag tag-level">★★☆☆ A2</span>
+                    <span class="tag tag-topic">Minna no Nihongo 2</span>
+                </div>
+                <h2 class="card-title">ちょっと みて くださいませんか</h2>
+                <p class="card-desc">Briefly explain a situation and make a polite request for help</p>
+            </div>
+            <a href="student_Make_a_polite_request.html" class="btn-start">Start Practice ▶</a>
+        </article>
+
+        <!-- シナリオ:ボランティアさんが してくださいました  -->
+        <article class="scenario-card" data-level="★★☆☆ A2" data-topic="Minna no Nihongo 2">
+            <div class="card-header">☕️</div>
+            <div class="card-body">
+                <div class="tags">
+                    <span class="tag tag-level">★★☆☆ A2</span>
+                    <span class="tag tag-topic">Minna no Nihongo 2</span>
+                </div>
+                <h2 class="card-title">ボランティアさんが してくださいました</h2>
+                <p class="card-desc">Talk about the kindness you received from volunteers, using expressions such as ～てくださいました.</p>
+            </div>
+            <a href="student_Talk_about_Kindness.html" class="btn-start">Start Practice ▶</a>
+        </article>
+
+        <!-- シナリオ:あなたは なにを したいですか。  -->
+        <article class="scenario-card" data-level="★★☆☆ A2" data-topic="Marugoto A2-1">
+            <div class="card-header">🌇</div>
+            <div class="card-body">
+                <div class="tags">
+                    <span class="tag tag-level">★★☆☆ A2</span>
+                    <span class="tag tag-topic">Marugoto A2-1</span>
+                </div>
+                <h2 class="card-title">あなたは なにを したいですか。ともだちに　言いましょう</h2>
+                <p class="card-desc">Say that you would like to drop by somewhere</p>
+            </div>
+            <a href="student_drop_by.html" class="btn-start">Start Practice ▶</a>
+        </article>
+
+ <!-- シナリオ:どこに いますか。  -->
+        <article class="scenario-card" data-level="★★☆☆ A2" data-topic="Marugoto A2-1">
+            <div class="card-header">📱</div>
+            <div class="card-body">
+                <div class="tags">
+                    <span class="tag tag-level">★☆☆☆ A1</span>
+                    <span class="tag tag-topic">Marugoto A1</span>
+                </div>
+                <h2 class="card-title">どこに いますか</h2>
+                <p class="card-desc">Say where you are now over the phone</p>
+            </div>
+            <a href="student_Say_where.html" class="btn-start">Start Practice ▶</a>
+        </article>
+
+		<!-- 
+          新しいシナリオを追加する際は、上記の <article> ブロックをコピーしてください。
+          重要: フィルタリングのために、articleタグに data-level="..." と data-topic="..." を
+          タグの中身と同じ文字で追加しておくと確実です（自動取得もしますが、念のため）。
+        -->
+
+    </div>
+
+    <footer class="api-section">
+        <p>This application uses Google Gemini API.</p>
+        <p>We do not store your API key or conversation data on our server.</p>
+        <p>&copy; 2025 Japanese Practice Portal</p>
+    </footer>
+
+    <!-- Filter Logic Script -->
     <script>
-        // 検索機能
-        const searchInput = document.getElementById('searchInput');
-        const scenarioItems = document.querySelectorAll('.scenario-item');
-        const noResults = document.getElementById('noResults');
+        document.addEventListener('DOMContentLoaded', () => {
+            const grid = document.getElementById('scenario-grid');
+            const cards = grid.querySelectorAll('.scenario-card');
+            const filterContainer = document.getElementById('filter-container');
+            const levelContainer = document.getElementById('level-filters');
+            const topicContainer = document.getElementById('topic-filters');
 
-        searchInput.addEventListener('input', (e) => {
-            const searchTerm = e.target.value.toLowerCase().trim();
-            let visibleCount = 0;
+            const levels = new Set();
+            const topics = new Set();
 
-            scenarioItems.forEach(item => {
-                const title = item.querySelector('h3').textContent.toLowerCase();
-                const description = item.querySelector('p').textContent.toLowerCase();
-                
-                if (title.includes(searchTerm) || description.includes(searchTerm)) {
-                    item.style.display = 'flex';
-                    visibleCount++;
-                } else {
-                    item.style.display = 'none';
+            // 1. Collect Tags from existing cards
+            cards.forEach(card => {
+                // Find tags inside the card
+                const levelTag = card.querySelector('.tag-level');
+                const topicTag = card.querySelector('.tag-topic');
+
+                if (levelTag) {
+                    const txt = levelTag.textContent.trim();
+                    levels.add(txt);
+                    card.setAttribute('data-level', txt); // Ensure attribute exists
+                }
+                if (topicTag) {
+                    const txt = topicTag.textContent.trim();
+                    topics.add(txt);
+                    card.setAttribute('data-topic', txt); // Ensure attribute exists
                 }
             });
 
-            // 検索結果が0件の場合
-            if (visibleCount === 0 && searchTerm !== '') {
-                noResults.style.display = 'block';
-            } else {
-                noResults.style.display = 'none';
+            // If no tags found, don't show filter
+            if (levels.size === 0 && topics.size === 0) return;
+            filterContainer.style.display = 'block';
+
+            // 2. Generate Buttons
+            createFilterButtons(levelContainer, levels, 'level');
+            createFilterButtons(topicContainer, topics, 'topic');
+
+            function createFilterButtons(container, set, type) {
+                // Convert Set to Array and Sort
+                const sorted = Array.from(set).sort();
+                sorted.forEach(item => {
+                    const btn = document.createElement('button');
+                    btn.className = 'filter-btn';
+                    btn.textContent = item;
+                    btn.onclick = () => toggleFilter(btn, type, item);
+                    container.appendChild(btn);
+                });
+            }
+
+            // 3. Filter Logic
+            let activeFilters = { level: null, topic: null };
+
+            function toggleFilter(btn, type, value) {
+                // Toggle UI state
+                const isActive = btn.classList.contains('active');
+                
+                // Reset siblings in same group
+                btn.parentNode.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+
+                if (isActive) {
+                    // Deselect
+                    activeFilters[type] = null;
+                } else {
+                    // Select
+                    btn.classList.add('active');
+                    activeFilters[type] = value;
+                }
+
+                applyFilters();
+            }
+
+            window.resetFilters = function() {
+                activeFilters = { level: null, topic: null };
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                applyFilters();
+            }
+
+            function applyFilters() {
+                cards.forEach(card => {
+                    const cardLevel = card.getAttribute('data-level');
+                    const cardTopic = card.getAttribute('data-topic');
+
+                    // Match logic
+                    const matchLevel = !activeFilters.level || cardLevel === activeFilters.level;
+                    const matchTopic = !activeFilters.topic || cardTopic === activeFilters.topic;
+
+                    if (matchLevel && matchTopic) {
+                        card.classList.remove('hidden');
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                });
             }
         });
-
-
     </script>
+
 </body>
 </html>
